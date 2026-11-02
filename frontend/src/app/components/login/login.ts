@@ -21,6 +21,7 @@ export class Login {
     this.authService.login(this.credentials).subscribe({
       next: () => {
         alert('Login realizado com sucesso!');
+        this.router.navigate(['/profile']);
 
       },
       error: (err) => {

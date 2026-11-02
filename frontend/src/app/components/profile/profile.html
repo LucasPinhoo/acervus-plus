@@ -1,0 +1,50 @@
+<div style="margin: 20px;">
+    <h2>Meu Perfil</h2>
+
+    @if (user) {
+    <div>
+        <p><strong>Usuário:</strong> {{ user.username }}</p>
+        <p><strong>Perfil (Papel):</strong> {{ user.role }}</p>
+        <p><strong>Status da Conta:</strong> {{ user.is_active ? 'Ativa' : 'Inativa' }}</p>
+    </div>
+
+    <hr>
+
+    <h3>Editar Informações</h3>
+    <form (ngSubmit)="onSalvar()">
+        <div>
+            <label for="email">E-mail:</label><br>
+            <input type="email" id="email" name="email" [(ngModel)]="user.email" required>
+        </div>
+        <br>
+        <div>
+            <label for="first_name">Nome:</label><br>
+            <input type="text" id="first_name" name="first_name" [(ngModel)]="user.first_name">
+        </div>
+        <br>
+        <div>
+            <label for="last_name">Sobrenome:</label><br>
+            <input type="text" id="last_name" name="last_name" [(ngModel)]="user.last_name">
+        </div>
+        <br>
+        <button type="submit">Salvar Alterações</button>
+    </form>
+
+    <br>
+    <button (click)="onLogout()">Sair da Conta (Logout)</button>
+
+    <hr style="margin-top: 30px;">
+    <h4>Zona de Perigo</h4>
+    <button (click)="onInativar()" style="color: red;">Inativar Minha Conta</button>
+    } @else {
+    <p>Carregando perfil...</p>
+    }
+
+    @if (message) {
+    <p style="color: green;">{{ message }}</p>
+    }
+
+    @if (errorMessage) {
+    <p style="color: red;">{{ errorMessage }}</p>
+    }
+</div>

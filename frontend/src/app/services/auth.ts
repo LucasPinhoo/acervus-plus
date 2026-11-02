@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
 
 @Injectable({
@@ -8,6 +8,13 @@ import { Observable, tap } from 'rxjs';
 export class Auth {
     private apiUrl = 'http://127.0.0.1:8000/api/auth';
     constructor(private http: HttpClient) { }
+
+    private getAuthHeaders(): HttpHeaders {
+        const token = localStorage.getItem('access_token');
+        return new HttpHeaders({
+            'Authorization': `Bearer ${token}`
+        });
+    }
 
     register(userData: any): Observable<any> {
         return this.http.post(`${this.apiUrl}/register/`, userData);
@@ -22,6 +29,18 @@ export class Auth {
                 }
             })
         );
+    }
+
+    getProfile(): Observable<any> {
+        return this.http.get(`${this.apiUrl}/profile/`, { headers: this.getAuthHeaders() });
+    }
+
+    updateProfile(profileData: any): Observable<any> {
+        return this.http.patch(`${this.apiUrl}/profile/`, profileData, { headers: this.getAuthHeaders() });
+    }
+
+    deactivateAccount(): Observable<any> {
+        return this.http.post(`${this.apiUrl}/deactivate/`, {}, { headers: this.getAuthHeaders() });
     }
 
     isLoggedIn(): boolean {
