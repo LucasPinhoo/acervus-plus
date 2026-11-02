@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Auth } from '../../services/auth';
@@ -14,7 +14,11 @@ export class Profile implements OnInit {
   message = '';
   errorMessage = '';
 
-  constructor(private authService: Auth, private router: Router) { }
+  constructor(
+    private authService: Auth,
+    private router: Router,
+    private cdr: ChangeDetectorRef
+  ) { }
 
   ngOnInit(): void {
     this.carregarPerfil();
@@ -24,6 +28,7 @@ export class Profile implements OnInit {
     this.authService.getProfile().subscribe({
       next: (data) => {
         this.user = data;
+        this.cdr.detectChanges();
       },
       error: () => {
         this.errorMessage = 'Erro ao carregar dados do perfil.';
