@@ -1,11 +1,11 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { Auth } from '../../services/auth';
 
 @Component({
   selector: 'app-profile',
-  imports: [FormsModule],
+  imports: [FormsModule, RouterLink],
   templateUrl: './profile.html',
   styleUrl: './profile.css'
 })

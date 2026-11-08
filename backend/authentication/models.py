@@ -16,13 +16,11 @@ class UserProfile(models.Model):
     def __str__(self):
         return f"{self.user.username} - {self.role}"
     
-    # Quando criado um user, cria-se automaticamente o userProfile
     @receiver(post_save, sender=User)
     def create_user_profile(sender, instance, created, **kwargs):
         if created:
             UserProfile.objects.create(user=instance)
 
-    # Quando salvo um user, salva automaticamente o userProfile
     @receiver(post_save, sender=User)
     def save_user_profile(sender, instance, **kwargs):
         if hasattr(instance, 'profile'):

@@ -1,0 +1,63 @@
+<div style="margin: 20px;">
+  <h2>Categorias Literárias</h2>
+  
+  <p><a routerLink="/profile">Voltar para o Perfil</a></p>
+  <hr>
+
+  <h3>{{ isEditing ? 'Editar Categoria' : 'Nova Categoria' }}</h3>
+  <form (ngSubmit)="salvar()">
+    <div>
+      <label for="name">Nome da Categoria:</label><br>
+      <input type="text" id="name" name="name" [(ngModel)]="formCategory.name" required>
+    </div>
+    <br>
+    <div>
+      <label for="description">Descrição:</label><br>
+      <textarea id="description" name="description" [(ngModel)]="formCategory.description" rows="3" cols="30"></textarea>
+    </div>
+    <br>
+    <button type="submit">{{ isEditing ? 'Atualizar' : 'Cadastrar' }}</button>
+    @if (isEditing) {
+      <button type="button" (click)="cancelarEdicao()" style="margin-left: 10px;">Cancelar</button>
+    }
+  </form>
+
+  @if (message) {
+    <p style="color: green;">{{ message }}</p>
+  }
+  @if (errorMessage) {
+    <p style="color: red;">{{ errorMessage }}</p>
+  }
+
+  <hr>
+
+  <h3>Categorias Cadastradas</h3>
+
+  @if (categories.length === 0) {
+    <p>Nenhuma categoria cadastrada ainda.</p>
+  } @else {
+    <table border="1" cellpadding="8" cellspacing="0">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nome</th>
+          <th>Descrição</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (cat of categories; track cat.id) {
+          <tr>
+            <td>{{ cat.id }}</td>
+            <td><strong>{{ cat.name }}</strong></td>
+            <td>{{ cat.description || '-' }}</td>
+            <td>
+              <button (click)="iniciarEdicao(cat)">Editar</button>
+              <button (click)="deletar(cat.id)" style="margin-left: 5px;">Excluir</button>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
+</div>
