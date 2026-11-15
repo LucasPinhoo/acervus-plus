@@ -1,0 +1,96 @@
+<div style="margin: 20px;">
+  <h2>Livros</h2>
+
+  <p><a routerLink="/profile">Voltar para o Perfil</a></p>
+  <hr>
+
+  <h3>Novo Livro</h3>
+  <form (ngSubmit)="salvar(fileInput)">
+    <div>
+      <label for="title">Título:</label><br>
+      <input type="text" id="title" name="title" [(ngModel)]="title" required>
+    </div>
+    <br>
+    <div>
+      <label for="author">Autor:</label><br>
+      <input type="text" id="author" name="author" [(ngModel)]="author" required>
+    </div>
+    <br>
+    <div>
+      <label for="isbn">ISBN (10 ou 13 dígitos):</label><br>
+      <input type="text" id="isbn" name="isbn" [(ngModel)]="isbn" required>
+    </div>
+    <br>
+    <div>
+      <label for="category">Categoria:</label><br>
+      <select id="category" name="category" [(ngModel)]="categoryId" required>
+        <option [ngValue]="null">Selecione uma categoria</option>
+        @for (cat of categories; track cat.id) {
+          <option [ngValue]="cat.id">{{ cat.name }}</option>
+        }
+      </select>
+    </div>
+    <br>
+    <div>
+      <label for="year">Ano de Publicação (opcional):</label><br>
+      <input type="number" id="year" name="year" [(ngModel)]="publicationYear">
+    </div>
+    <br>
+    <div>
+      <label for="pdf">Arquivo PDF (máx. 50 MB):</label><br>
+      <input type="file" id="pdf" #fileInput accept=".pdf" (change)="onFileSelected($event)" required>
+    </div>
+    <br>
+    <button type="submit">Cadastrar Livro</button>
+  </form>
+
+  @if (message) {
+    <p style="color: green;">{{ message }}</p>
+  }
+  @if (errorMessage) {
+    <p style="color: red;">{{ errorMessage }}</p>
+  }
+
+  <hr>
+
+  <h3>Livros Cadastrados</h3>
+
+  @if (books.length === 0) {
+    <p>Nenhum livro cadastrado ainda.</p>
+  } @else {
+    <table border="1" cellpadding="8" cellspacing="0">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Título</th>
+          <th>Autor</th>
+          <th>ISBN</th>
+          <th>Categoria</th>
+          <th>Ano</th>
+          <th>PDF</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (book of books; track book.id) {
+          <tr>
+            <td>{{ book.id }}</td>
+            <td><strong>{{ book.title }}</strong></td>
+            <td>{{ book.author }}</td>
+            <td>{{ book.isbn }}</td>
+            <td>{{ book.category_name }}</td>
+            <td>{{ book.publication_year || '-' }}</td>
+            <td>
+              @if (book.pdf_file) {
+                <a [href]="book.pdf_file" target="_blank">Abrir PDF</a>
+              }
+            </td>
+            <td>
+              <button (click)="deletar(book.id)">Excluir</button>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
+</div>
